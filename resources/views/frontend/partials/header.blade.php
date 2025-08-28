@@ -29,7 +29,7 @@
                                     </ul>
                                 </li>
                                 <li class="{{ (Request::segment(1) === 'tribute') ? 'active' : '' }}"><a href="{{ route('tribute.index') }}">Submit Tribute</a></li>
-                                <li class="{{ (Request::segment(1) === 'tribute') ? 'active' : '' }}"><a href="{{ route('tribute.index') }}">Test CI/CD</a></li>
+                                <li class="{{ (Request::segment(1) === 'tribute') ? 'active' : '' }}"><a href="{{ route('tribute.index') }}">Tester CI/CD</a></li>
                             </ul>
                         </nav>
                     </div>
