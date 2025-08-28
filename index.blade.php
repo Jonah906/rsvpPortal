@@ -64,7 +64,7 @@
                 if (result.isConfirmed) {
                     window.location.href = "{{ route('rsvp.index') }}";
                 }else{
-                    window.location.href = "{{ url('/') }}";
+                    window.location.href = "/";
                 }
             });
         });
