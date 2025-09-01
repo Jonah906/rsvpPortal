@@ -42,10 +42,14 @@ jobs:
 
       - name: Deploy (Git Pull)
         run: |
-          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "
-            git config --global --add safe.directory /var/www/html/rsvpPortal &&
-            cd /var/www/html/rsvpPortal &&
-            git pull origin main
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no usr_dev@your-server-ip "
+            cd /var/www/rsvpPortal && \
+            git fetch origin main && \
+            git reset --hard origin/main && \
+            composer install --no-dev --optimize-autoloader && \
+            php artisan migrate --force && \
+            php artisan config:cache && \
+            php artisan route:cache
           "
 
       - name: Synchronize files to the server
@@ -70,3 +74,4 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan optimize
+      
