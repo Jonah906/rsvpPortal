@@ -40,7 +40,7 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "cd /var/www/project && git pull origin main"
+          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "cd /var/www/html/rsvpPortal && git pull origin main"
 
       - name: Synchronize files to the server
         uses: easingthemes/ssh-deploy@v2.1.5
