@@ -1,8 +1,10 @@
 name: Deploy Laravel App to Production
+
 on: 
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -38,9 +40,13 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 68.183.96.237 >> ~/.ssh/known_hosts
 
-      - name: Deploy
+      - name: Deploy (Git Pull)
         run: |
-          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "cd /var/www/html/rsvpPortal && git pull origin main"
+          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "
+            git config --global --add safe.directory /var/www/html/rsvpPortal &&
+            cd /var/www/html/rsvpPortal &&
+            git pull origin main
+          "
 
       - name: Synchronize files to the server
         uses: easingthemes/ssh-deploy@v2.1.5
@@ -51,7 +57,7 @@ jobs:
           REMOTE_USER: ${{ secrets.VPS_USER }}
           TARGET: "/var/www/html/rsvpPortal"
 
-      - name: Run Remote/Artisan Commands
+      - name: Run Remote Artisan Commands
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
