@@ -42,21 +42,23 @@ jobs:
 
       - name: Deploy (Git Pull)
         run: |
-          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no usr_dev@68.183.96.237"
-            cd /var/www/rsvpPortal && \
-            git fetch origin main && \
-            git reset --hard origin/main && \
-            composer install --no-dev --optimize-autoloader && \
-            php artisan migrate --force && \
-            php artisan config:cache && \
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no usr_dev@68.183.96.237 << 'EOF'
+            cd /var/www/rsvpPortal
+            git fetch origin main
+            git reset --hard origin/main
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
             php artisan route:cache
-          "
+            php artisan view:cache
+            php artisan optimize
+          EOF
 
       - name: Synchronize files to the server
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: " . "
+          SOURCE: "."
           REMOTE_HOST: ${{ secrets.VPS_HOST }}
           REMOTE_USER: ${{ secrets.VPS_USER }}
           TARGET: "/var/www/html/rsvpPortal"
@@ -74,4 +76,3 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan optimize
-      
