@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,7 +25,7 @@ jobs:
       - name: Install Node.js and npm
         uses: actions/setup-node@v3
         with:
-          node-version: '22'  
+          node-version: '22'
 
       - name: Install NPM dependencies
         run: npm install
@@ -53,26 +54,3 @@ jobs:
             php artisan view:cache
             php artisan optimize
           EOF
-
-      - name: Synchronize files to the server
-        uses: easingthemes/ssh-deploy@v2.1.5
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "."
-          REMOTE_HOST: ${{ secrets.VPS_HOST }}
-          REMOTE_USER: ${{ secrets.VPS_USER }}
-          TARGET: "/var/www/html/rsvpPortal"
-
-      - name: Run Remote Artisan Commands
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/html/rsvpPortal
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            php artisan optimize
