@@ -25,7 +25,7 @@
             </ul>
         </li>
 	    <li><a href="{{ route('tribute.index') }}">Submit Tribute</a></li>
-        <li><a href="{{ route('tribute.index') }}">CI/CD</a></li>
+        <li><a href="{{ route('tribute.index') }}">CI/CD Sub</a></li>
 
     </ul>
     </nav>
