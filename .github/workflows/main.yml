@@ -43,7 +43,7 @@ jobs:
       - name: Deploy (Git Pull)
         run: |
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no usr_dev@68.183.96.237 << 'EOF'
-            cd /var/www/rsvpPortal
+            cd /var/www/html/rsvpPortal
             git fetch origin main
             git reset --hard origin/main
             composer install --no-dev --optimize-autoloader
