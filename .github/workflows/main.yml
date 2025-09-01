@@ -30,11 +30,17 @@ jobs:
       - name: Build NPM Assets
         run: npm run build
 
-      - name: Debug SSH key
+      - name: Setup SSH
         run: |
-          ls -l ~/.ssh/
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no usr_dev@${{ secrets.REMOTE_HOST }} "echo '✅ SSH worked from GitHub Actions'"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 68.183.96.237 >> ~/.ssh/known_hosts
 
+      - name: Deploy
+        run: |
+          ssh -i ~/.ssh/id_ed25519 usr_dev@68.183.96.237 "cd /var/www/project && git pull origin main"
 
       - name: Synchronize files to the server
         uses: easingthemes/ssh-deploy@v2.1.5
