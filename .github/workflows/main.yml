@@ -30,6 +30,12 @@ jobs:
       - name: Build NPM Assets
         run: npm run build
 
+      - name: Debug SSH key
+        run: |
+          ls -l ~/.ssh/
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no usr_dev@${{ secrets.REMOTE_HOST }} "echo '✅ SSH worked from GitHub Actions'"
+
+
       - name: Synchronize files to the server
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
